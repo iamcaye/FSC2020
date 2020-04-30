@@ -62,7 +62,7 @@ int main(){
                 if(leer > 0){
                     buffer[leer] = '\0';
                     printf("Recibido: %s", buffer);
-                }else if(leer == 0){
+                }else if(leer <= 0){
                     if(errno != 0 && errno != EINTR){
                         printf("%d", errno);
                         perror("Fallo en read de la fifo");
