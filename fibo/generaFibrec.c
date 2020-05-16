@@ -31,7 +31,7 @@ int main(int argc, void * argv[]){
 	alarm(atoi(argv[1]));
 	while(i < MAX && global == 0){
 		list[i] = (long long)fib_rec(i);
-		printf("<|%ld -- %lld|>\t", i, list[i]);
+		printf("<|%ld -- %lld|>\t\n", i, list[i]);
 		i++;
 	}
 

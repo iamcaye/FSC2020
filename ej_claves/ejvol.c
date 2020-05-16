@@ -18,6 +18,7 @@ int copiar(int origen, int destino);
 int main(int argc, void * argv[]){
 	if(argc < 5){
 		printf("Uso: %s <Destino> <Origen> <Usuario> <Contrasenia>\n", argv[0]);
+        exit(1);
 	}
 
     int res = copiaf(argv[1], argv[2], argv[3], argv[4]);
@@ -78,11 +79,15 @@ int buscarUyP(int fd, char * user, char * passwd){
         }while((leidos > 0) && (c != '\n'));
         buffer[total-1]= '\0';
 
-    	char * puntero = strstr(buffer, "@");
-    	*puntero = '\0';
-    	usuario = buffer;
-    	contr = puntero+1;
-    	//ahora hay dos cadenas apuntadas por usuario y password
+        if(leidos > 0){
+        	char * puntero = strstr(buffer, "@");
+        	*puntero = '\0';
+        	usuario = buffer;
+        	contr = puntero+1;
+        	//ahora hay dos cadenas apuntadas por usuario y password
+        }else{
+            break;
+        }
 
     }while(strcmp(user,usuario) != 0);
     
