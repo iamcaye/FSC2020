@@ -1,0 +1,13 @@
+
+CREAR UN CLIENTE UDP
+ 1 -> Obtener IP del servidor
+ 2 -> Crear socket UDP (socket(PF_INET, SOCK_DGRAM, 0))  // El ultimo argumento
+                                                            es el protoco q usa
+ 3 -> Inicializamos la struct sockaddr_in con la IP del servidor
+ 4 -> Ya estamos listos para mandar datos por el socket con sendto
+
+ CREAR UN SERVIDOR UDP
+ 1 -> Crear socket UDP
+ 2 -> Inicializar la struct sockaddr_in
+ 3 -> Vincular el socket a la direccion especificada
+ 4 -> Ya estamos listos para recibir datos por el socket con recvfrom
