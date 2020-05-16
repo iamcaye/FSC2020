@@ -15,8 +15,8 @@
 #define TAM 128
 
 int main(int argc, void *argv[]){
-    if(argc < 2){
-        printf("Uso: %s <Fichero>", argv[0]);
+    if(argc < 3){
+        printf("Uso: %s <Fichero> <IP servidor>\n", argv[0]);
         exit(1);
     }
 
@@ -30,7 +30,7 @@ int main(int argc, void *argv[]){
     int sd;
     uint32_t ip_serv;
 
-    ip_serv = inet_addr("127.0.0.1");
+    ip_serv = inet_addr(argv[2]);
     if(ip_serv < 0){
         perror("Fallo en asignar la IP del servidor");
         close(fd);
