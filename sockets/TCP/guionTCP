@@ -1,10 +1,10 @@
-# Cliente TCP
+## Cliente TCP ##
   1 -> Inicializar la estructura del servidor (sockaddr_in)
   2 -> Crear socket [socket(PF_INET, SOCK_STREAM, 0)]
   3 -> Intentamos establecer la conexion entre el socket y el serviodor (connect)
   4 -> El socket ya esta listo para mandar y recibir informacion
 
-# Servidor TCP
+## Servidor TCP ##
   1 -> Inicializar la estructura del servidor (sockaddr_in)
   2 -> Crear socket [socket(PF_INET, SOCK_STREAM, 0)]
   3 -> Enlazamos el servidor y el socket (bind)
