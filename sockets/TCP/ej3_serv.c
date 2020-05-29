@@ -48,11 +48,13 @@ int main(int argc, void * argv[]){
     socklen_t addr_len = sizeof(cli);
     uint8_t length = 0;
     while(1){
+        memset(buffer, 0, TAM);
         n_sd = accept(sd, (struct sockaddr *)&cli, &addr_len);
         if(n_sd < 0){
             perror("accept");
             break;
         }
+        printf("Conexion establecida\n");
 
         leidos = read(n_sd, &length, sizeof(uint8_t));
         if(leidos < 0){
@@ -74,17 +76,21 @@ int main(int argc, void * argv[]){
             close(n_sd);
             break;
         }
+        printf("Listo para recibir los datos del fichero origen\n");
 
         do{
             leidos = read(n_sd, buffer, TAM);
             escrito = write(fd, buffer, leidos);
         }while((leidos > 0) && (escrito == leidos));
 
-        if(leidos == escrito){
-            escrito = write(n_sd, "y", 1);
+        if((leidos == 0) && (escrito == leidos)){
+            printf("Copia exitosa!\n");
         }else{
-            escrito = write(n_sd, "n", 1);
+            printf("Fracaso\n");
         }
+
+        close(n_sd);
+        close(fd);
     }
 
     close(sd);
