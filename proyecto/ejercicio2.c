@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 #define TAM 128
 
