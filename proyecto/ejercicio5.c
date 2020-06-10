@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include <sys/select.h>
 #include <fcntl.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 #define MAX_CLIENTES 128
 
@@ -15,15 +18,15 @@ struct InfoCliente{
 
 int espera_evento(int sd, struct InfoCliente * array_clientes, int * array_listos, int * nueva_conexion){
     fd_set conjunto_r;
-    fd_set conjunto_w;
-    fd_set copia;
+    struct sockaddr_in * cli;
+    socklen_t cli_len = sizeof(cli);
     int listos = sizeof(array_listos)/sizeof(array_listos[0]);
     int n_sd;
 
     nueva_conexion = 0;
     
 
-    FD_ZERO(&conjunto);
+    FD_ZERO(&conjunto_r);
 
     n_sd = accept(sd, (struct sockaddr *)&cli, &cli_len);
     if(n_sd < 0){
@@ -64,7 +67,7 @@ int espera_evento(int sd, struct InfoCliente * array_clientes, int * array_listo
 //        }
 //    }
 
-    return nueva_conexion;
+    return &nueva_conexion;
 }
 
 int max(int a, int b){
