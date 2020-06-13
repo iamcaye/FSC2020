@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <string.h>
 #include <unistd.h>
 #include <sys/select.h>
 #include <fcntl.h>
@@ -9,7 +8,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#define MAX_CLIENTES 128
+#define MAX_CLIENTES 1024
 
 struct InfoCliente{
     int fd;
@@ -22,12 +21,20 @@ struct InfoCliente{
 // 4. return listos 
 
 int espera_evento(int sd, struct InfoCliente * array_clientes, int * array_listos, int * nueva_conexion){
+    fd_set conjunto;
     struct sockaddr_in * cli;
     socklen_t cli_len = sizeof(cli);
-    int listos = sizeof(array_listos)/sizeof(array_listos[0]);
+    int listos = 0;
     int n_sd;
+    unsigned n= 0;
+    unsigned i= 0;
 
     nueva_conexion = 0;
+
+    FD_ZERO(&conjunto);
+    while((n < MAX_CLIENTES) && *(array_listos+n)){
+        FD_SET(array_clientes[*(array_listos+n)].sd, &conjunto);
+    }
 
     n_sd = accept(sd, (struct sockaddr *)&cli, &cli_len);
     if(n_sd < 0){
@@ -35,21 +42,19 @@ int espera_evento(int sd, struct InfoCliente * array_clientes, int * array_listo
         return -1;
     }
 
-    unsigned i = 0;
-    while(array_clientes[i].sd != -1){
-        if(array_clientes[i].sd == n_sd){
-            printf("%d ya esta conectado!\n", n_sd);
-            return -1;
+    if(FD_ISSET(n_sd, &conjunto)){
+        printf("Conexion ya registrada(%d)\n", n_sd);
+    }else{
+        while(array_clientes[i].sd != -1){
+            i++;
+        }        
+        if(i < MAX_CLIENTES){
+            *nueva_conexion = 1;
+            array_clientes[i].sd = n_sd;
         }
-        i++;
     }
     
-    if((array_clientes[i-1].sd) == -1){
-        *nueva_conexion = 1;
-        char * num;
-        array_listos[listos] = i-1;
-        sprintf(num, "%d", i-1);
-        array_clientes[i-1].fd = creat(strcat("cliente",num), 0666);
+    while(*(array_listos+listos)){
         listos++;
     }
 
