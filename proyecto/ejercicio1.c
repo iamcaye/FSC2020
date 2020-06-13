@@ -16,6 +16,11 @@ struct InfoCliente{
     int sd;
 };
 
+// 1. Crear una estructura
+// 2. Añadimos todos los descripores listos
+// 3. Comprobamos que haya nueva conexion
+// 4. return listos 
+
 int espera_evento(int sd, struct InfoCliente * array_clientes, int * array_listos, int * nueva_conexion){
     struct sockaddr_in * cli;
     socklen_t cli_len = sizeof(cli);
@@ -48,7 +53,7 @@ int espera_evento(int sd, struct InfoCliente * array_clientes, int * array_listo
         listos++;
     }
 
-    return *nueva_conexion;
+    return listos;
 }
 
 int main(){return 0;}
