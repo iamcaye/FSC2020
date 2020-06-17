@@ -53,7 +53,7 @@ int espera_evento(int sd, struct InfoCliente * array_clientes, int * array_listo
         listos++;
     }
 
-    return listos;
+    return listos-1;
 }
 
 int main(){return 0;}
